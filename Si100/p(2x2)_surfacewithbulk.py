@@ -10,8 +10,9 @@ A0 = 5.431
 TOTAL_LAYERS = 12
 DISPLAY_REPEAT = (3, 3, 1)
 SHOW_GUI = True
-PAIR = (0, 1)
-ANGLE = (1, 0, 4)
+
+if TOTAL_LAYERS < 5:
+    raise ValueError("TOTAL_LAYERS must be at least 5 for the reconstructed layers")
 
 # Columns: k, l, m, dx, dy, dz. All displacements are in angstroms.
 table = np.array([
@@ -38,8 +39,7 @@ table = np.array([
 ])
 
 scale = A0 / 4 * np.array([np.sqrt(2), np.sqrt(2), 1])
-ideal = table[:, :3] * scale
-positions = ideal.copy()
+positions = table[:, :3] * scale
 positions += table[:, 3:6]
 
 # Continue the four-layer diamond stacking below the reconstructed layers.
@@ -60,35 +60,6 @@ slab = Atoms(
 slab.info["source_doi"] = "10.1103/PhysRevB.51.14504"
 slab.info["reconstruction"] = "p(2x2)"
 slab.info["model"] = "Five reconstructed layers; any deeper layers ideal; bare bottom"
-
-# Check the built coordinates against Table IV before any translation.
-print("\nTable IV comparison (A):")
-print("ID Layer    (k,l,m)       dx model/table       dy model/table       dz model/table")
-for i, row in enumerate(table):
-    delta = slab.positions[i] - ideal[i]
-    klm = tuple(map(int, row[:3]))
-    print(f"{i:2} {slab.get_tags()[i]:5} {str(klm):>12}"
-          f"    {delta[0]:7.3f}/{row[3]:7.3f}"
-          f"    {delta[1]:7.3f}/{row[4]:7.3f}"
-          f"    {delta[2]:7.3f}/{row[5]:7.3f}")
-
-print("\nFigure 18 comparison (A):")
-print("Atoms   Model    Paper")
-for i, j, reference in [(0, 1, 2.28), (2, 3, 2.28), (0, 4, 2.31), (1, 5, 2.34)]:
-    distance = slab.get_distance(i, j, mic=True)
-    print(f"{i}-{j}     {distance:.5f}   {reference:.2f}")
-
-bucklings = []
-for i, j in [(0, 1), (2, 3)]:
-    dimer = slab.get_distance(i, j, mic=True, vector=True)
-    buckling = np.degrees(np.arctan2(abs(dimer[2]), np.linalg.norm(dimer[:2])))
-    bucklings.append(buckling)
-    print(f"Dimer {i}-{j} buckling: {buckling:.2f} degrees")
-print(f"Mean buckling: {np.mean(bucklings):.2f} degrees (paper: 19.1)")
-
-# Change PAIR or ANGLE above; the middle atom is the angle's vertex.
-print(f"Distance {PAIR}: {slab.get_distance(*PAIR, mic=True):.5f} A")
-print(f"Angle {ANGLE}: {slab.get_angle(*ANGLE, mic=True):.2f} degrees")
 
 output = Path(__file__).resolve().parent / "output"
 output.mkdir(exist_ok=True)

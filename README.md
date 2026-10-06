@@ -39,7 +39,23 @@ Run a script from the main project folder:
     python "Si100/p(2x1)s_fivelayers.py"
 
 Generated structures are saved in Si100/output.
-The scripts also print geometry checks and open the ASE viewer.
+Each generator writes `.extxyz` and `.traj` files and optionally opens the ASE
+viewer. Set `SHOW_GUI = False` in the generator to run without the viewer.
+`TOTAL_LAYERS` must be at least five, the number of reconstructed layers provided.
+
+After running the desired generators, run the separate geometry comparisons:
+
+    python Si100/validate_si100.py
+
+By default, validation reads all eight generated `.extxyz` files and clearly
+reports any missing files. To check selected files, including `.traj` files:
+
+    python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.traj"
+
+The report shows model bond lengths and mean dimer buckling, the
+reconstruction-specific paper references, and model-minus-reference differences.
+Paper values are rounded, so the comparisons are descriptive, not exact
+pass/fail tests. The p(2×2) and c(4×2) paper buckling values are averages of two dimers.
 
 ## Current limitations
 
