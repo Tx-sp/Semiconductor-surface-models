@@ -52,10 +52,8 @@ reports any missing files. To check selected files, including `.traj` files:
 
     python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.traj"
 
-The report shows model bond lengths and mean dimer buckling, the
-reconstruction-specific paper references, and model-minus-reference differences.
-Paper values are rounded, so the comparisons are descriptive, not exact
-pass/fail tests. The p(2×2) and c(4×2) paper buckling values are averages of two dimers.
+Run this script to see the model bond lengths and dimer buckling values and
+their differences from the original paper.
 
 ## Current limitations
 

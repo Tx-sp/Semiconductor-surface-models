@@ -48,7 +48,6 @@ def main():
     ]
 
     print("Ramstad, Brocks and Kelly (1995), Figure 18; DOI: 10.1103/PhysRevB.51.14504")
-    print("Paper values are rounded; differences are model minus reference, not pass/fail tests.")
     print("p(2x2) and c(4x2) paper buckling values refer to the mean of two dimers.")
     print("The symmetric p(2x1)s reference is zero buckling by symmetry. Atom indices are zero-based.")
 
