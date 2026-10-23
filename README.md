@@ -1,63 +1,47 @@
-# Reconstructed Semiconductor Surfaces
+﻿# Reconstructed Semiconductor Surfaces
 
-Bachelor's thesis project on constructing atomic models of semiconductor
-surface reconstructions from published structural information using ASE.
+Bachelor's thesis project constructing atomic models of silicon surface reconstructions from published structural information using the Atomic Simulation Environment (ASE).
 
-## Current work
+## Models
 
-Si(100) reconstructions:
-- p(2×1) symmetric
-- p(2×1) asymmetric
-- p(2×2)
-- c(4×2)
+| Surface | Reconstructions | Structural source | Documentation |
+| --- | --- | --- | --- |
+| Si(100) | p(2x1) symmetric, p(2x1) asymmetric, p(2x2), c(4x2) | Ramstad et al. (1995), theoretical displacements | [Si100](Si100/README.md) |
+| Si(111) | (2x1) modified Pandey, enhanced-vibration fit | Xu et al. (2004), experimental LEED refinement | [Si111](Si111/README.md) |
 
-Each reconstruction has two variants:
-- Five reconstructed atomic layers.
-- Five reconstructed layers with ideal silicon layers underneath.
+Each surface folder contains generators, a separate geometry-validation script, and an `output/` directory for generated structures. The linked READMEs describe source tables, coordinate conventions, assumptions, and validation.
 
-The bulk variants contain twelve layers by default.
+## Getting started
 
-## Source
+Run commands from the repository root with Python and the project dependencies:
 
-A. Ramstad, G. Brocks, and P. J. Kelly,
-"Theoretical study of the Si(100) surface reconstruction,"
-Physical Review B 51, 14504–14523 (1995).
+```powershell
+python -m pip install -r requirements.txt
+```
 
-https://doi.org/10.1103/PhysRevB.51.14504
+Generate an Si(100) model and compare its geometry with the paper:
 
-Coordinates are constructed from Tables III and IV.
-Selected geometrical measurements are compared with Figure 18.
+```powershell
+python "Si100/p(2x1)s_fivelayers.py"
+python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.extxyz"
+```
 
-## Running the scripts
+Si(100) generators open the ASE viewer by default. Set `SHOW_GUI = False` in the generator to disable it.
 
-Install the dependencies:
+Generate and validate Si(111) without opening the viewer:
 
-    python -m pip install -r requirements.txt
+```powershell
+python "Si111/(2x1)mp_enhanced_vibrations.py" --no-gui
+python Si111/validate_si111.py
+```
 
-Run a script from the main project folder:
+## Outputs and scope
 
-    python "Si100/p(2x1)s_fivelayers.py"
+Generators export the fundamental cell as `.extxyz` and `.traj` files in their surface folder's `output/` directory. Both formats preserve cell and periodic boundary information. `DISPLAY_REPEAT` controls only visualization; repeated display cells are not exported.
 
-Generated structures are saved in Si100/output.
-Each generator writes `.extxyz` and `.traj` files and optionally opens the ASE
-viewer. Set `SHOW_GUI = False` in the generator to run without the viewer.
-`TOTAL_LAYERS` must be at least five, the number of reconstructed layers provided.
+These are static geometry models reconstructed from published data. The scripts do not perform energy minimization or stability calculations. Bottom surfaces are unpassivated. Si(100) bulk variants add ideal layers; Si(111) contains only the 16 tabulated atoms. See each model README for cell and vacuum conventions.
 
-After running the desired generators, run the separate geometry comparisons:
+## References
 
-    python Si100/validate_si100.py
-
-By default, validation reads all eight generated `.extxyz` files and clearly
-reports any missing files. To check selected files, including `.traj` files:
-
-    python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.traj"
-
-Run this script to see the model bond lengths and dimer buckling values and
-their differences from the original paper.
-
-## Current limitations
-
-These are preliminary geometry models.
-No energy minimisation or stability calculations have been performed.
-Added bulk layers occupy ideal lattice positions.
-The bottom surface is unpassivated.
+- A. Ramstad, G. Brocks, and P. J. Kelly, "Theoretical study of the Si(100) surface reconstruction," *Physical Review B* **51**, 14504-14523 (1995). [DOI: 10.1103/PhysRevB.51.14504](https://doi.org/10.1103/PhysRevB.51.14504)
+- G. Xu et al., "Atomic structure of the cleaved Si(111)-(2x1) surface refined by dynamical LEED," *Physical Review B* **70**, 045307 (2004). [DOI: 10.1103/PhysRevB.70.045307](https://doi.org/10.1103/PhysRevB.70.045307)
