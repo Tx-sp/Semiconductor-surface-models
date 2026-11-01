@@ -39,7 +39,11 @@ python Si111/validate_si111.py
 
 Generators export the fundamental cell as `.extxyz` and `.traj` files in their surface folder's `output/` directory. Both formats preserve cell and periodic boundary information. `DISPLAY_REPEAT` controls only visualization; repeated display cells are not exported.
 
-These are static geometry models reconstructed from published data. The scripts do not perform energy minimization or stability calculations. Bottom surfaces are unpassivated. Si(100) bulk variants add ideal layers; Si(111) contains only the 16 tabulated atoms. See each model README for cell and vacuum conventions.
+The structure generators create static geometry models reconstructed from published data. Bottom surfaces are unpassivated. Si(100) bulk variants add ideal layers; Si(111) contains only the 16 tabulated atoms. See each model README for cell and vacuum conventions.
+
+## MACE relaxation
+
+[MACE](MACE/README.md) contains a simple relaxation script for each of the four five-layer Si(100) models and the Si(111) slab. The scripts use ASE and MACE-MPA-0 on CUDA to relax atomic positions with fixed cells. Each model's `output/` folder contains the relaxed CIF, ASE trajectory, and optimization log.
 
 ## References
 

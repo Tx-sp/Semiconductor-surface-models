@@ -1,4 +1,7 @@
 .venv/
+.venv312/
+Ignore/
+MACE/previous_runs/
 venv/
 __pycache__/
 *.py[cod]
