@@ -30,10 +30,8 @@ The script saves `relaxed.cif`, `relaxed.traj`, and `optimization.log` inside it
 .venv312/Scripts/python.exe -m ase gui MACE/Si100_p2x1a/output/relaxed.traj
 ```
 
-With `.venv312` activated, display a larger surface:
+To display a larger surface:
 
 ```powershell
 python -m ase gui MACE/Si100_p2x1a/output/relaxed.traj -r 3,3,1 -b
 ```
-
-Use `.venv312` for Python 3.12 compatibility. Select `.venv312/Scripts/python.exe` as the Python interpreter.

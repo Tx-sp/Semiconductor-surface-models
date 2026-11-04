@@ -61,7 +61,3 @@ python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.traj"
 The script uses minimum-image distances and zero-based Python indices. It prints selected bond lengths, dimer buckling angles, and differences from the paper. Figure 18's buckling angles for p(2x2) and c(4x2) are averages over two dimers; the validator also reports their mean. Reference angles are 0.0, 18.3, 19.1, and 18.8 degrees for p(2x1)s, p(2x1)a, p(2x2), and c(4x2), respectively.
 
 This validator reports geometry differences; it does not apply a numerical pass/fail tolerance to those differences. The paper estimates convergence of its calculated bond lengths to 0.01 angstrom and bond angles to 1 degree.
-
-## Scope and limitations
-
-The five reconstructed layers use published displacements. Additional layers occupy ideal lattice positions, and the bottom surface is unpassivated. No calculator, constraints, geometry optimization, or stability calculation is applied by the generators. Their zero third cell vector is not a finite-vacuum simulation cell.
