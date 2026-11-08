@@ -8,3 +8,9 @@ The paper supplies no numerical a0. We use **6.0583 Å**, the experimental InAs 
 
 Run `python "InAs/c(8x2)_tableI.py"` from the repository root. Set `SHOW_GUI = False` for export only. `DISPLAY_REPEAT = (3,3,1)` affects only the viewer, with x horizontal and z vertical. Fundamental-cell exports are `output/c(8x2)_tableI.extxyz`, `.traj`, and `.cif`; use extxyz/traj to preserve the slab PBC flags, which CIF does not encode.
 
+
+## InAs(001)-zeta(4x2), Miwa
+
+[Miwa et al., Surface Science 542, 101-111 (2003)](https://doi.org/10.1016/S0039-6028(03)00955-5), Figures 1(d), 3 and Table 1. `zeta(4x2)_Miwa.py` retains all 11 printed Cartesian coordinates in angstroms (including 2.051), without scaling, apart from periodic wrapping and a common vacuum translation. With a0 = 5.96 Angstrom, the short x direction (parallel to [110], vertical in Figure 3) and long y direction (parallel to [1,-1,0], horizontal in Figure 3) have periods 2a0/sqrt(2) and 4a0/sqrt(2). Figure 3's left/right counterparts are inferred by reflection about y = 6.26; the missing subsurface dimer partners are inferred at x = 2.84 + 2.76 = 5.60. These are geometric completions, not additional tabulated relaxed coordinates; the printed precision is retained rather than forcing exact symmetry or every rounded figure distance. The resulting 22-atom reconstruction includes the surface In dimer and both subsurface In dimers. Deeper As and In coordinates are not fully supplied and are omitted; no ideal bulk layers are added.
+
+Run `python "InAs/zeta(4x2)_Miwa.py"` from the repository root. `VACUUM = 10.0`, `SHOW_GUI = True` and `DISPLAY_REPEAT = (1, 1, 1)` follow the example script; set `SHOW_GUI = False` for export only. Fundamental-cell `.extxyz`, `.traj` and `.cif` files go to `InAs/output/zeta(4x2)_Miwa.*`, with in-plane PBC (use extxyz/traj to retain the nonperiodic z flag).
