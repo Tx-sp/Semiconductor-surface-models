@@ -1,0 +1,35 @@
+data_image0
+_chemical_formula_structural       Si10
+_chemical_formula_sum              "Si10"
+_cell_length_a       7.6805938572482795
+_cell_length_b       3.8402969286241393
+_cell_length_c       25.262
+_cell_angle_alpha    90.0
+_cell_angle_beta     90.0
+_cell_angle_gamma    90.0
+
+_space_group_name_H-M_alt    "P 1"
+_space_group_IT_number       1
+
+loop_
+  _space_group_symop_operation_xyz
+  'x, y, z'
+
+loop_
+  _atom_site_type_symbol
+  _atom_site_label
+  _atom_site_symmetry_multiplicity
+  _atom_site_fract_x
+  _atom_site_fract_y
+  _atom_site_fract_z
+  _atom_site_occupancy
+  Si  Si1       1.0  0.14717155107913393  -2.12143938857645e-15  0.5856922965866294  1.0000
+  Si  Si2       1.0  0.43845571844774245  4.680427222898268e-16  0.6080083380711231  1.0000
+  Si  Si3       1.0  0.012732280805896697  0.5000000000000012  0.5551896998448193  1.0000
+  Si  Si4       1.0  0.48536490108321  0.5000000000000004  0.5548685439626282  1.0000
+  Si  Si5       1.0  0.2517099548289027  0.4999999999999995  0.49285929505527576  1.0000
+  Si  Si6       1.0  0.7500949170718956  0.4999999999999994  0.5071321038861238  1.0000
+  Si  Si7       1.0  0.23512350119653658  -2.93946616837507e-17  0.4387322169329307  1.0000
+  Si  Si8       1.0  0.761300034597463  -4.8238225533570036e-17  0.45194864599172535  1.0000
+  Si  Si9       1.0  -0.018004686200775468  4.593287552713773e-16  0.38524720248792893  1.0000
+  Si  Si10      1.0  0.5093534506967025  1.0663936854586004e-15  0.39728310124700267  1.0000
