@@ -7,7 +7,9 @@ from ase.visualize import view
 
 A0 = 6.0583
 VACUUM = 10.0
-DISPLAY_REPEAT = (1, 1, 1)
+TOTAL_LAYERS = 5
+DISPLAY_REPEAT = (2, 2, 1)
+EXPORT_REPEAT = (2, 2, 1)
 SHOW_GUI = True
 
 symbols = [
@@ -58,6 +60,9 @@ table = np.array([
 
 
 def build_slab():
+    if type(TOTAL_LAYERS) is not int or not 1 <= TOTAL_LAYERS <= 9:
+        raise ValueError("TOTAL_LAYERS must be an integer from 1 to 9.")
+    layer_last_tags = (8, 10, 13, 18, 22, 24, 27, 32, 36)
     scale = A0 * np.array([1 / np.sqrt(2), 1 / np.sqrt(2), 1])
     positions, elements, tags = [], [], []
     for row, (symbol, xyz) in enumerate(zip(symbols, table), start=1):
@@ -76,6 +81,7 @@ def build_slab():
     slab = Atoms(elements, positions=positions,
                  cell=[8 * scale[0], 2 * scale[1], 0],
                  pbc=[True, True, False], tags=tags)
+    slab = slab[slab.get_tags() <= layer_last_tags[TOTAL_LAYERS - 1]]
     slab.center(vacuum=VACUUM, axis=2)
     slab.info["source_doi"] = "10.1103/PhysRevB.64.075307"
     slab.info["source_table"] = "Table I, InAs column, including all unnumbered rows"
@@ -90,9 +96,10 @@ def main():
     slab = build_slab()
     output = Path(__file__).resolve().parent / "output"
     output.mkdir(exist_ok=True)
-    name = Path(__file__).stem
+    name = "c(8x2)_tableI"
+    export_slab = slab.repeat(EXPORT_REPEAT)
     for extension in ("extxyz", "traj", "cif"):
-        write(output / f"{name}.{extension}", slab)
+        write(output / f"{name}.{extension}", export_slab)
     if SHOW_GUI:
         view(slab.repeat(DISPLAY_REPEAT), rotations="-90x", show_bonds=True)
 

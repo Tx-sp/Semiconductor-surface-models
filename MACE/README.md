@@ -7,6 +7,8 @@ Each model folder has its own `relax.py` and `output/` folder:
 - `Si100_p2x2`
 - `Si100_c4x2`
 - `Si111_2x1`
+- `InAs_Kumpf_c8x2`
+- `InAs_Miwa_fig3`
 
 Edit `MODELS`, `HEAD`, `FMAX`, `STEPS`, or `OPTIMIZER` directly in the chosen script. Run it once, for example from the repository root:
 
@@ -35,3 +37,27 @@ To display a larger surface:
 ```powershell
 python -m ase gui MACE/Si100_p2x1a/output/mh-1/relaxed.traj -r 3,3,1 -b
 ```
+
+For Miwa et al. model, run from the repository root:
+
+```powershell
+.venv/Scripts/python.exe "InAs/zeta(4x2)_Miwa_fig3.py"
+.venv/Scripts/python.exe MACE/InAs_Miwa_fig3/relax.py
+```
+
+Replay the optimization or open the relaxed structure:
+
+```powershell
+.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_fig3/output/mh-1/optimization.traj
+.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_fig3/output/mh-1/relaxed.traj
+```
+
+For Kumpf et al. model:
+
+```powershell
+.venv/Scripts/python.exe "InAs/c(8x2)_Kumpf.py"
+.venv/Scripts/python.exe MACE/InAs_Kumpf_c8x2/relax.py
+.venv/Scripts/python.exe -m ase gui MACE/InAs_Kumpf_c8x2/output/mh-1/relaxed.traj
+```
+
+Set `TOTAL_LAYERS` in the Kumpf generator and `EXPORT_REPEAT` in either generator before regenerating inputs. Set `SHOW_GUI = False` to generate without opening the viewer.

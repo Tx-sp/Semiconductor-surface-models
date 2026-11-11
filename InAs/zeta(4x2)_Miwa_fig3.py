@@ -7,7 +7,8 @@ from ase.visualize import view
 
 A0 = 5.96
 VACUUM = 10.0
-DISPLAY_REPEAT = (2, 1, 1)
+DISPLAY_REPEAT = (4, 2, 1)
+EXPORT_REPEAT = (4, 2, 1)
 SHOW_GUI = True
 
 
@@ -34,8 +35,9 @@ def main():
     output = Path(__file__).resolve().parent / "output"
     output.mkdir(exist_ok=True)
     name = Path(__file__).stem
+    export_slab = slab.repeat(EXPORT_REPEAT)
     for extension in ("extxyz", "traj", "cif"):
-        write(output / f"{name}.{extension}", slab)
+        write(output / f"{name}.{extension}", export_slab)
     if SHOW_GUI:
         view(slab.repeat(DISPLAY_REPEAT), rotations="-90z", show_bonds=True)
 
