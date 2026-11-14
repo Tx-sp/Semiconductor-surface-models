@@ -10,14 +10,14 @@ The structures come from theoretical geometry optimization within the local-dens
 
 ## Models and coordinates
 
-| Filename prefix | Reconstruction | Source table | Atoms in five-layer cell | Atoms in default twelve-layer cell |
+| Filename prefix | Reconstruction | Source table | Atoms in five-layer cell | Atoms with twelve layers |
 | --- | --- | --- | ---: | ---: |
 | `p(2x1)s` | Symmetric dimers | III | 10 | 24 |
 | `p(2x1)a` | Asymmetric dimers | III | 10 | 24 |
 | `p(2x2)` | Alternating buckled dimers | IV | 20 | 48 |
 | `c(4x2)` | Alternating buckled dimers | IV | 20 | 48 |
 
-Each reconstruction has two generators: `_fivelayers.py` contains five reconstructed atomic layers, and `_surfacewithbulk.py` adds ideal silicon layers underneath, giving twelve layers by default. `TOTAL_LAYERS` controls the layer count and must be at least five.
+Each reconstruction has one generator: `p(2x1)s.py`, `p(2x1)a.py`, `p(2x2).py`, or `c(4x2).py`. `TOTAL_LAYERS = 5` keeps the five reconstructed atomic layers. Higher values add ideal silicon planes underneath; for example, `TOTAL_LAYERS = 12` adds seven bulk planes. The setting must be an integer of at least five.
 
 Ideal Cartesian positions are constructed as `(k * sqrt(2), l * sqrt(2), m) * A0 / 4`, with `A0 = 5.431` angstroms. The tabulated displacements are then added in angstroms. Table III provides x and z displacements with zero y displacement; Table IV provides x, y, and z displacements. Displacement values are not multiplied by `A0`.
 
@@ -34,8 +34,7 @@ The current scripts leave the third cell vector zero and do not add vacuum.
 Install dependencies as described in the [project README](../README.md). Run commands from the repository root:
 
 ```powershell
-python "Si100/p(2x1)s_fivelayers.py"
-python "Si100/p(2x1)s_surfacewithbulk.py"
+python "Si100/p(2x1)s.py"
 ```
 
 Replace the filename prefix to generate another reconstruction. `SHOW_GUI = True` opens the ASE viewer by default; set it to `False` in the relevant generator to run without the viewer. `DISPLAY_REPEAT = (3, 3, 1)` controls visualization, with x horizontal and z vertical.
@@ -46,16 +45,16 @@ Each generator writes `output/<script_name>.extxyz` and `output/<script_name>.tr
 
 ## Geometry validation
 
-After generating all eight models, compare them with Figure 18:
+After generating all four models, compare them with Figure 18:
 
 ```powershell
 python Si100/validate_si100.py
 ```
 
-By default, the validator reads all eight `.extxyz` files and reports missing files. To compare selected exports, including `.traj` files:
+By default, the validator reads all four `.extxyz` files and reports missing files. To compare selected exports, including `.traj` files:
 
 ```powershell
-python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.traj"
+python Si100/validate_si100.py "Si100/output/p(2x1)s.traj"
 ```
 
 The script uses minimum-image distances and zero-based Python indices. It prints selected bond lengths, dimer buckling angles, and differences from the paper. Figure 18's buckling angles for p(2x2) and c(4x2) are averages over two dimers; the validator also reports their mean. Reference angles are 0.0, 18.3, 19.1, and 18.8 degrees for p(2x1)s, p(2x1)a, p(2x2), and c(4x2), respectively.

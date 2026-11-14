@@ -24,8 +24,8 @@ python -m pip install -r requirements.txt
 Generate an Si(100) model and compare its geometry with the paper:
 
 ```powershell
-python "Si100/p(2x1)s_fivelayers.py"
-python Si100/validate_si100.py "Si100/output/p(2x1)s_fivelayers.extxyz"
+python "Si100/p(2x1)s.py"
+python Si100/validate_si100.py "Si100/output/p(2x1)s.extxyz"
 ```
 
 Si(100) generators open the ASE viewer by default. Set `SHOW_GUI = False` in the generator to disable it.
@@ -41,7 +41,7 @@ Generate the Miwa Figure 3 array, then export and view the InAs model:
 
 ```powershell
 python InAs/generate_fullmiwa_array.py
-python "InAs/zeta(4x2)_Miwa_fig3.py"
+python "InAs/miwa_full.py"
 ```
 
 The generator uses mirroring, In partners and eight inferred lower As atoms; the modelling script reads `miwa_array.npz`. 

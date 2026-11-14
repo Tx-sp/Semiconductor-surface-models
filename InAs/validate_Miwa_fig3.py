@@ -3,7 +3,7 @@ import runpy
 
 
 def main():
-    model = runpy.run_path(str(Path(__file__).with_name("zeta(4x2)_Miwa_fig3.py")))
+    model = runpy.run_path(str(Path(__file__).with_name("miwa_full.py")))
     slab = model["build_slab"]()
     distance = lambda i, j: slab.get_distance(i, j, mic=True)
     checks = [

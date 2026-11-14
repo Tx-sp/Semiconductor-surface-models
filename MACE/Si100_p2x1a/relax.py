@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from ase.constraints import FixAtoms
 from ase.io import read, write
 from ase.optimize import BFGS, FIRE
 from mace.calculators import mace_mp
@@ -17,8 +18,10 @@ def main(model):
     output = folder / "output" / model
     output.mkdir(parents=True, exist_ok=True)
 
-    slab = read(repository / "Si100/output/p(2x1)a_fivelayers.traj")
+    slab = read(repository / "Si100/output/p(2x1)a.traj")
     slab.center(vacuum=10.0, axis=2)
+    #add fix layers
+    slab.set_constraint(FixAtoms(mask=slab.get_tags() > slab.get_tags().max() - 2))
     slab.calc = mace_mp(
         model=model,
         head=HEAD,
@@ -28,7 +31,8 @@ def main(model):
     )
 
     with (output / "optimization.log").open("w") as log:
-        optimizer = OPTIMIZER(slab, logfile=log)
+        optimizer = OPTIMIZER(slab, logfile=log,
+                              trajectory=str(output / "optimization.traj"))
         converged = optimizer.run(fmax=FMAX, steps=STEPS)
 
     slab.info.update(mace_model=model, mace_head=HEAD,

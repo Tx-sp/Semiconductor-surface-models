@@ -27,7 +27,8 @@ def main(model):
     )
 
     with (output / "optimization.log").open("w") as log:
-        optimizer = OPTIMIZER(slab, logfile=log)
+        optimizer = OPTIMIZER(slab, logfile=log,
+                              trajectory=str(output / "optimization.traj"))
         converged = optimizer.run(fmax=FMAX, steps=STEPS)
 
     slab.info.update(mace_model=model, mace_head=HEAD,

@@ -8,7 +8,7 @@ Each model folder has its own `relax.py` and `output/` folder:
 - `Si100_c4x2`
 - `Si111_2x1`
 - `InAs_Kumpf_c8x2`
-- `InAs_Miwa_fig3`
+- `InAs_Miwa_4x2`
 
 Edit `MODELS`, `HEAD`, `FMAX`, `STEPS`, or `OPTIMIZER` directly in the chosen script. Run it once, for example from the repository root:
 
@@ -41,15 +41,15 @@ python -m ase gui MACE/Si100_p2x1a/output/mh-1/relaxed.traj -r 3,3,1 -b
 For Miwa et al. model, run from the repository root:
 
 ```powershell
-.venv/Scripts/python.exe "InAs/zeta(4x2)_Miwa_fig3.py"
-.venv/Scripts/python.exe MACE/InAs_Miwa_fig3/relax.py
+.venv/Scripts/python.exe "InAs/miwa_full.py"
+.venv/Scripts/python.exe MACE/InAs_Miwa_4x2/relax.py
 ```
 
 Replay the optimization or open the relaxed structure:
 
 ```powershell
-.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_fig3/output/mh-1/optimization.traj
-.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_fig3/output/mh-1/relaxed.traj
+.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_4x2/output/mh-1/optimization.traj
+.venv/Scripts/python.exe -m ase gui MACE/InAs_Miwa_4x2/output/mh-1/relaxed.traj
 ```
 
 For Kumpf et al. model:

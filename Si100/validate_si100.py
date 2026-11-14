@@ -37,14 +37,13 @@ def main():
     )
     parser.add_argument(
         "files", nargs="*", type=Path,
-        help="Structure files (.extxyz or .traj); defaults to all eight generated .extxyz files.",
+        help="Structure files (.extxyz or .traj); defaults to all four generated .extxyz files.",
     )
     args = parser.parse_args()
     output = Path(__file__).resolve().parent / "output"
     files = args.files or [
-        output / f"{reconstruction}_{variant}.extxyz"
+        output / f"{reconstruction}.extxyz"
         for reconstruction in REFERENCES
-        for variant in ("fivelayers", "surfacewithbulk")
     ]
 
     print("Ramstad, Brocks and Kelly (1995), Figure 18; DOI: 10.1103/PhysRevB.51.14504")

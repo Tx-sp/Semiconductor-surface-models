@@ -11,14 +11,16 @@ Run `python "InAs/c(8x2)_tableI.py"` from the repository root. Set `SHOW_GUI = F
 
 ## InAs(001)-zeta(4x2), Miwa
 
-[Miwa et al., Surface Science 542, 101-111 (2003)](https://doi.org/10.1016/S0039-6028(03)00955-5), Figures 1(d), 3 and Table 1. `zeta(4x2)_Miwa.py` retains all 11 printed Cartesian coordinates in angstroms (including 2.051). Using a0 = 5.96 Angstrom, the short x direction (parallel to [110], vertical in Figure 3) and long y direction (parallel to [1,-1,0], horizontal in Figure 3) have periods 2a0/sqrt(2) and 4a0/sqrt(2). 
+[Miwa et al., Surface Science 542, 101-111 (2003)](https://doi.org/10.1016/S0039-6028(03)00955-5), Figures 1(d), 3 and Table 1. `miwa_from_table.py` retains all 11 printed Cartesian coordinates in angstroms (including 2.051). Using a0 = 5.96 Angstrom, the short x direction (parallel to [110], vertical in Figure 3) and long y direction (parallel to [1,-1,0], horizontal in Figure 3) have periods 2a0/sqrt(2) and 4a0/sqrt(2). 
 
 Figure 3's left/right counterparts are inferred by reflection about y = 6.26; the missing subsurface dimer partners inferred at x = 2.84 + 2.76 = 5.60. Deeper As and In coordinates are not fully supplied and are omitted.
 
-Run `python "InAs/zeta(4x2)_Miwa.py"` from the repository root. `VACUUM = 10.0`, `SHOW_GUI = True` and `DISPLAY_REPEAT = (1, 1, 1)` follow the example script; set `SHOW_GUI = False` for export only. Fundamental-cell `.extxyz`, `.traj` and `.cif` files go to `InAs/output/zeta(4x2)_Miwa.*`, with in-plane PBC (use extxyz/traj to retain the nonperiodic z flag).
+Run `python "InAs/miwa_from_table.py"` from the repository root. `VACUUM = 10.0`, `SHOW_GUI = True` and `DISPLAY_REPEAT = (1, 1, 1)` follow the example script; set `SHOW_GUI = False` for export only. Fundamental-cell `.extxyz`, `.traj` and `.cif` files go to `InAs/output/miwa_from_table.*`, with in-plane PBC (use extxyz/traj to retain the nonperiodic z flag).
 
 ## Miwa Figure 3 completion
 
-`generate_fullmiwa_array.py` generates the 30-atom NumPy array `miwa_array.npz` from Table 1 using mirroring, In partners and eight inferred lower As atoms to complete Figure 3. `zeta(4x2)_Miwa_fig3.py` reads this array and uses the same ASE modelling workflow as the original Miwa script.
+`generate_fullmiwa_array.py` generates the 30-atom NumPy array `miwa_array.npz` from Table 1 using mirroring, In partners and eight inferred lower As atoms to complete Figure 3. `miwa_full.py` reads this array and uses the same ASE modelling workflow as the original Miwa script.
 
 There are some inconsistency regarding the 1-2 bond (Atoms 0--4) from Fig. 3 and the coordinate table, so tabulated coordinates are retained. This will be addressed later.
+
+`miwa_full.py` adds ideal bulk planes with `EXTRA_BULK_LAYERS` (default 6; use 0 for the original 30 atoms). `EXPORT_REPEAT` controls saved structures and `DISPLAY_REPEAT` controls the viewer.
