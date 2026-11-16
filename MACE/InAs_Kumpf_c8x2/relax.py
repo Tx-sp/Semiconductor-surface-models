@@ -18,7 +18,7 @@ def main(model):
     output = folder / "output" / model
     output.mkdir(parents=True, exist_ok=True)
 
-    slab = read(repository / "InAs/output/c(8x2)_tableI.traj")
+    slab = read(repository / "InAs/output/c(8x2)_kumpf.traj")
     #add fix layers
     layer_ends = (8, 10, 13, 18, 22, 24, 27, 32, 36)
     cutoff = layer_ends[layer_ends.index(int(slab.get_tags().max())) - 2]

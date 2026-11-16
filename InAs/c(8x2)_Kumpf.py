@@ -96,7 +96,7 @@ def main():
     slab = build_slab()
     output = Path(__file__).resolve().parent / "output"
     output.mkdir(exist_ok=True)
-    name = "c(8x2)_tableI"
+    name = "c(8x2)_kumpf"
     export_slab = slab.repeat(EXPORT_REPEAT)
     for extension in ("extxyz", "traj", "cif"):
         write(output / f"{name}.{extension}", export_slab)
