@@ -27,7 +27,7 @@ The z-axis is normal to the surface, and deeper layers have decreasing z. All mo
 - p(2x2): in-plane vectors `(A0 * sqrt(2), 0, 0)` and `(0, A0 * sqrt(2), 0)`.
 - c(4x2): skewed primitive cell with vectors `(A0 * sqrt(2), A0 / sqrt(2), 0)` and `(0, A0 * sqrt(2), 0)`.
 
-The current scripts leave the third cell vector zero and do not add vacuum.
+Each generator centers the slab along z with 10 angstroms of vacuum on each side before saving. The MACE scripts read this cell directly.
 
 ## Running
 

@@ -56,6 +56,7 @@ slab = Atoms(
     pbc=[True, True, False],
     tags=np.repeat(np.arange(1, TOTAL_LAYERS + 1), 4)
 )
+slab.center(vacuum=10.0, axis=2)
 slab.info["source_doi"] = "10.1103/PhysRevB.51.14504"
 slab.info["reconstruction"] = "p(2x2)"
 slab.info["model"] = "Five reconstructed layers; any deeper layers ideal; bare bottom"
