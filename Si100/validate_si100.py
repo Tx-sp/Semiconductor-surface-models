@@ -32,59 +32,28 @@ REFERENCES = {
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Compare generated Si100 structures with Ramstad et al. (1995)."
-    )
-    parser.add_argument(
-        "files", nargs="*", type=Path,
-        help="Structure files (.extxyz or .traj); defaults to all four generated .extxyz files.",
-    )
+    parser = argparse.ArgumentParser(description="Compare Si100 geometry with Ramstad et al., Figure 18.")
+    parser.add_argument("files", nargs="*", type=Path)
     args = parser.parse_args()
     output = Path(__file__).resolve().parent / "output"
-    files = args.files or [
-        output / f"{reconstruction}.extxyz"
-        for reconstruction in REFERENCES
-    ]
-
-    print("Ramstad, Brocks and Kelly (1995), Figure 18; DOI: 10.1103/PhysRevB.51.14504")
-    print("p(2x2) and c(4x2) paper buckling values refer to the mean of two dimers.")
-    print("The symmetric p(2x1)s reference is zero buckling by symmetry. Atom indices are zero-based.")
-
-    failed = False
+    files = args.files or [output / f"{name}.extxyz" for name in REFERENCES]
     for path in files:
-        print(f"\n{path}")
-        if not path.is_file():
-            print(f"MISSING: {path}; run the corresponding generator first.")
-            failed = True
-            continue
-        try:
-            slab = read(path)
-            reconstruction = slab.info.get("reconstruction")
-            if reconstruction not in REFERENCES:
-                raise ValueError(f"Unsupported or missing reconstruction metadata: {reconstruction!r}")
-            references = REFERENCES[reconstruction]
-            print(f"Reconstruction: {reconstruction}")
-            print("Bond (angstrom)    Model    Paper    Difference")
-            for i, j, reference in references["bonds"]:
-                distance = slab.get_distance(i, j, mic=True)
-                print(f"{i}-{j:<13} {distance:8.5f}  {reference:5.2f}  {distance - reference:+.5f}")
-
-            bucklings = []
-            for i, j in references["dimers"]:
-                dimer = slab.get_distance(i, j, mic=True, vector=True)
-                buckling = np.degrees(np.arctan2(abs(dimer[2]), np.linalg.norm(dimer[:2])))
-                bucklings.append(buckling)
-                print(f"Dimer {i}-{j} buckling: {buckling:.5f} degrees")
-            mean = np.mean(bucklings)
-            reference = references["buckling"]
-            print("Buckling (degrees)   Model    Paper    Difference")
-            print(f"Mean              {mean:8.5f}  {reference:5.1f}  {mean - reference:+.5f}")
-        except (OSError, ValueError, IndexError) as error:
-            print(f"ERROR: {path}: {error}")
-            failed = True
-
-    return int(failed)
+        slab = read(path)
+        references = REFERENCES[path.stem]
+        print(f"\n{path.name}")
+        print("Bond (0-based)    Model    Figure 18    Difference (angstrom)")
+        for i, j, reference in references["bonds"]:
+            distance = slab.get_distance(i, j, mic=True)
+            print(f"{i}-{j:<12} {distance:8.3f} {reference:12.3f} {distance - reference:+13.3f}")
+        bucklings = []
+        for i, j in references["dimers"]:
+            dimer = slab.get_distance(i, j, mic=True, vector=True)
+            bucklings.append(np.degrees(np.arctan2(abs(dimer[2]), np.linalg.norm(dimer[:2]))))
+        mean = np.mean(bucklings)
+        reference = references["buckling"]
+        print("Buckling (deg)    Model    Figure 18    Difference")
+        print(f"Mean           {mean:8.3f} {reference:12.3f} {mean - reference:+13.3f}")
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

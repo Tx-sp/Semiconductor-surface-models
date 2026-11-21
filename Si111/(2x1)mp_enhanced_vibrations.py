@@ -6,6 +6,7 @@ from ase import Atoms
 from ase.io import write
 from ase.visualize import view
 
+TOTAL_LAYERS = 10
 DISPLAY_REPEAT = (3, 3, 1)
 SHOW_GUI = True
 
@@ -28,13 +29,35 @@ table = np.array([
     [0.014, 0.000, -7.058]
 ])
 
+ideal = np.array([
+    [5.542, 1.920, -3.135],
+    [2.217, 0.000, -3.135],
+    [4.434, 0.000, -3.919],
+    [1.108, 1.920, -3.919],
+    [4.434, 0.000, -6.270],
+    [1.108, 1.920, -6.270],
+    [3.325, 1.920, -7.054],
+    [0.000, 0.000, -7.054],
+])
+
 
 def build_slab():
+    if TOTAL_LAYERS < 8:
+        raise ValueError("TOTAL_LAYERS must be at least 8")
+    positions = table.copy()
+    t = ideal[4] - ideal[0]
+    layers = list(ideal.reshape(4, 2, 3))
+    for layer in range(8, TOTAL_LAYERS):
+        lower = layers[layer - 6] + t
+        lower[:, :2] %= [6.65, 3.84]
+        layers.append(lower)
+        positions = np.vstack([positions, lower])
     slab = Atoms(
-        symbols=["Si"] * len(table),
-        positions=table,
+        symbols=["Si"] * len(positions),
+        positions=positions,
         cell=[6.65, 3.84, 0],
-        pbc=[True, True, False]
+        pbc=[True, True, False],
+        tags=np.repeat(np.arange(1, TOTAL_LAYERS + 1), 2)
     )
     slab.info["source_doi"] = "10.1103/PhysRevB.70.045307"
     slab.info["source_table"] = "Table II, rightmost column group"
@@ -42,7 +65,8 @@ def build_slab():
     slab.info["coordinate_units"] = "angstrom"
     slab.info["structure_origin"] = "Experimental LEED refinement using automated tensor LEED"
     slab.info["reconstruction"] = "Si(111)-(2x1), modified Pandey"
-    slab.info["model"] = "Static 16-atom geometry from the enhanced-vibration fit"
+    slab.info["model"] = f"16 tabulated atoms (8 layers) + {TOTAL_LAYERS - 8} ideal layers below; bare bottom"
+    slab.info["total_layers"] = TOTAL_LAYERS
     slab.info["atom_order"] = "Paper atoms 1-16 correspond to Python indices 0-15"
     slab.info["surface_normal"] = "+z outward"
     slab.info["vacuum_per_side_angstrom"] = 10.0

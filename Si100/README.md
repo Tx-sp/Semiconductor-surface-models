@@ -51,12 +51,12 @@ After generating all four models, compare them with Figure 18:
 python Si100/validate_si100.py
 ```
 
-By default, the validator reads all four `.extxyz` files and reports missing files. To compare selected exports, including `.traj` files:
+By default, the script reads all four `.extxyz` files. Input filenames identify the reconstruction, for example `p(2x1)s.traj`. To compare selected exports, including `.traj` files:
 
 ```powershell
 python Si100/validate_si100.py "Si100/output/p(2x1)s.traj"
 ```
 
-The script uses minimum-image distances and zero-based Python indices. It prints selected bond lengths, dimer buckling angles, and differences from the paper. Figure 18's buckling angles for p(2x2) and c(4x2) are averages over two dimers; the validator also reports their mean. Reference angles are 0.0, 18.3, 19.1, and 18.8 degrees for p(2x1)s, p(2x1)a, p(2x2), and c(4x2), respectively.
+The script uses minimum-image distances and zero-based Python indices. It prints selected bond lengths and mean dimer buckling angles as model, paper, and difference tables. Figure 18's buckling angles for p(2x2) and c(4x2) are averages over two dimers. Reference angles are 0.0, 18.3, 19.1, and 18.8 degrees for p(2x1)s, p(2x1)a, p(2x2), and c(4x2), respectively.
 
-This validator reports geometry differences; it does not apply a numerical pass/fail tolerance to those differences. The paper estimates convergence of its calculated bond lengths to 0.01 angstrom and bond angles to 1 degree.
+This validator reports geometry differences; it does not apply a numerical pass/fail tolerance to those differences. T
