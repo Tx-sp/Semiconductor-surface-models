@@ -6,7 +6,7 @@ LEED basis: a = a0[1,-1,0]/2, b = a0[1,1,0]/2, c = a0[0,0,1]. The in-plane origi
 
 The paper supplies no numerical a0. We use **6.0583 Å**, the experimental InAs value in [Table 1 of the Ioffe-hosted band-parameter study](https://journals.ioffe.ru/articles/viewPDF/5724). ASE adds 10 Å vacuum per side along +z; PBC is `(True, True, False)`. No extra bulk layers, passivation, or relaxation are included.
 
-Run `python "InAs/c(8x2)_Kumpf.py"` from the repository root. Set `SHOW_GUI = False` for export only. `DISPLAY_REPEAT = (2,2,1)` affects only the viewer, with x horizontal and z vertical. `EXPORT_REPEAT = (2,2,1)` controls the saved structures, and `TOTAL_LAYERS = 7` selects the slab depth. Exports are `output/c(8x2)_kumpf.extxyz`, `.traj`, and `.cif`; use extxyz/traj to preserve the slab PBC flags, which CIF does not encode. The Kumpf MACE script reads `output/c(8x2)_kumpf.traj`.
+Run `python "InAs/c(8x2)_Kumpf.py"` from the repository root. Set `SHOW_GUI = False` for export only. `DISPLAY_REPEAT = (1,1,1)` affects only the viewer, with x horizontal and z vertical. `EXPORT_REPEAT = (1,1,1)` saves one reconstruction cell per file, and `TOTAL_LAYERS = 7` selects the slab depth. Exports are `output/c(8x2)_kumpf.extxyz`, `.traj`, and `.cif`; use extxyz/traj to preserve the slab PBC flags, which CIF does not encode. The Kumpf MACE script reads `output/c(8x2)_kumpf.traj`.
 
 
 ## InAs(001)-zeta(4x2), Miwa
@@ -23,4 +23,4 @@ Run `python "InAs/miwa_from_table.py"` from the repository root. `VACUUM = 10.0`
 
 There are some inconsistency regarding the 1-2 bond (Atoms 0--4) from Fig. 3 and the coordinate table, so tabulated coordinates are retained. This will be addressed later.
 
-`miwa_full.py` adds ideal bulk planes with `EXTRA_BULK_LAYERS` (default 6; use 0 for the original 30 atoms). `EXPORT_REPEAT` controls saved structures and `DISPLAY_REPEAT` controls the viewer.
+`miwa_full.py` adds ideal bulk planes with `TOTAL_LAYERS = 7` (four added planes, 62 atoms; use 3 for the original 30 atoms). `EXPORT_REPEAT = (1,1,1)` saves one reconstruction cell per file and `DISPLAY_REPEAT` controls the viewer.

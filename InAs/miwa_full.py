@@ -8,8 +8,8 @@ from ase.visualize import view
 A0 = 5.96
 VACUUM = 10.0
 TOTAL_LAYERS = 7
-DISPLAY_REPEAT = (2, 1, 1)
-EXPORT_REPEAT = (2, 1, 1)
+DISPLAY_REPEAT = (1, 1, 1)
+EXPORT_REPEAT = (1, 1, 1)
 SHOW_GUI = True
 
 
