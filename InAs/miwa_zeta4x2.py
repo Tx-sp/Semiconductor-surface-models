@@ -5,12 +5,12 @@ from ase import Atoms
 from ase.io import write
 from ase.visualize import view
 
-A0 = 5.96
-VACUUM = 10.0
-TOTAL_LAYERS = 7
-DISPLAY_REPEAT = (1, 1, 1)
-EXPORT_REPEAT = (1, 1, 1)
-SHOW_GUI = True
+A0 = 5.96                   # theoretical InAs lattice constant in Å used by Miwa et al.
+VACUUM = 10.0               # vacuum on each side in Å
+TOTAL_LAYERS = 7            # total layers; 3 is the reconstruction only, extra ones are ideal bulk added at the bottom
+DISPLAY_REPEAT = (1, 1, 1)  # only for the viewer
+EXPORT_REPEAT = (1, 1, 1)   # how many cells go in the saved file
+SHOW_GUI = True             # set False to only save the files
 
 
 def build_slab():
@@ -20,7 +20,7 @@ def build_slab():
                      cell=data["cell"], pbc=[True, True, False], tags=data["tags"])
     slab.wrap()
 
-    # Bulk layers here
+    # Ideal bulk layers below the eight lower As atoms
     extra_bulk_layers = TOTAL_LAYERS - 3
     spacing = A0 / np.sqrt(2)
     as_indices = np.flatnonzero(slab.numbers == 33)

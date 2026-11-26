@@ -1,4 +1,3 @@
-import argparse
 from pathlib import Path
 
 import numpy as np
@@ -6,10 +5,11 @@ from ase import Atoms
 from ase.io import write
 from ase.visualize import view
 
-TOTAL_LAYERS = 10
-DISPLAY_REPEAT = (3, 3, 1)
-SHOW_GUI = True
+TOTAL_LAYERS = 10           # total layers; extra ones are ideal bulk added below the 8 tabulated ones (min 8)
+DISPLAY_REPEAT = (3, 3, 1)  # only for the viewer, the saved file is one cell
+SHOW_GUI = True             # set False to only save the files
 
+# Table II of Xu et al. (2004), MP structure with enhanced vibrations: atoms 1-16, x, y, z in Å
 table = np.array([
     [4.338, 1.920,  3.452],
     [5.443, 0.000,  2.954],
@@ -29,6 +29,7 @@ table = np.array([
     [0.014, 0.000, -7.058]
 ])
 
+# Ideal bulk positions of atoms 9-16 from Table II, used to add the extra layers
 ideal = np.array([
     [5.542, 1.920, -3.135],
     [2.217, 0.000, -3.135],
@@ -76,9 +77,6 @@ def build_slab():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build Xu et al.'s Si(111)-(2x1) MP structure.")
-    parser.add_argument("--no-gui", action="store_true", help="Export without opening the ASE viewer.")
-    args = parser.parse_args()
     slab = build_slab()
 
     output = Path(__file__).resolve().parent / "output"
@@ -89,7 +87,7 @@ def main():
         write(path, slab)
         print(path)
 
-    if SHOW_GUI and not args.no_gui:
+    if SHOW_GUI:
         view(slab.repeat(DISPLAY_REPEAT), rotations="-90x", show_bonds=True)
 
 

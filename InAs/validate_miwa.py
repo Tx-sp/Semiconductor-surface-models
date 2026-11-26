@@ -7,7 +7,7 @@ def main():
     slab = model["build_slab"]()
     distance = lambda i, j: slab.get_distance(i, j, mic=True)
     checks = [
-        ("1-2", distance(0, 4), 2.59), # For this bond, the table coordinates are used, mismatch with Fig. 3 is expected. 
+        ("1-2", distance(0, 4), 2.59),  # table coordinates kept, not tested
         ("1'-2'", distance(1, 5), 2.51),
         ("2-3", distance(4, 6), 2.59),
         ("2'-3'", distance(5, 7), 2.62),

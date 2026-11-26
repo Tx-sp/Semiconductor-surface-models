@@ -6,14 +6,14 @@ from ase.io import write
 from ase.visualize import view
 
 # Model config
-A0 = 5.431
-TOTAL_LAYERS = 7
+A0 = 5.431                  # lattice constant of Si in Å (experimental value)
+TOTAL_LAYERS = 7            # total layers; extra ones are ideal bulk added at the bottom (min 5)
 
 # Display config
-DISPLAY_REPEAT = (3, 3, 1)
-SHOW_GUI = True
+DISPLAY_REPEAT = (3, 3, 1)  # only for the viewer, the saved file is one cell
+SHOW_GUI = True             # set False to only save the files
 
-# Table IV: k, l, m, dx, dy, dz (angstroms)
+# Table IV of Ramstad et al. (1995): ideal site k, l, m and displacements dx, dy, dz in Å
 table = np.array([
     [0, 0, 0, 0.992, 0.000, -0.832],
     [2, 0, 0, -0.688, 0.000, -0.094],
@@ -41,7 +41,7 @@ scale = A0 / 4 * np.array([np.sqrt(2), np.sqrt(2), 1])
 positions = table[:, :3] * scale
 positions += table[:, 3:6]
 
-# Bulk layers
+# Ideal bulk layers below the five reconstructed ones
 stacking = [(0, 0), (0, 1), (1, 1), (1, 0)]
 for n in range(5, TOTAL_LAYERS):
     k, l = stacking[n % 4]

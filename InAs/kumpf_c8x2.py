@@ -5,13 +5,14 @@ from ase import Atoms
 from ase.io import write
 from ase.visualize import view
 
-A0 = 6.0583
-VACUUM = 10.0
-TOTAL_LAYERS = 7
-DISPLAY_REPEAT = (1, 1, 1)
-EXPORT_REPEAT = (1, 1, 1)
-SHOW_GUI = True
+A0 = 6.0583                 # InAs lattice constant in Å (experimental, Vurgaftman et al. 2001)
+VACUUM = 10.0               # vacuum on each side in Å
+TOTAL_LAYERS = 7            # how many of the tabulated layers to keep (1 to 9)
+DISPLAY_REPEAT = (1, 1, 1)  # only for the viewer
+EXPORT_REPEAT = (1, 1, 1)   # how many cells go in the saved file
+SHOW_GUI = True             # set False to only save the files
 
+# Table I of Kumpf et al. (2001), InAs column: LEED fractions x, y, z of each row
 symbols = [
     "In", "In", "In", "In", "In", "As", "As", "As",
     "In", "In", "As", "As", "As",
@@ -62,9 +63,10 @@ table = np.array([
 def build_slab():
     if type(TOTAL_LAYERS) is not int or not 1 <= TOTAL_LAYERS <= 9:
         raise ValueError("TOTAL_LAYERS must be an integer from 1 to 9.")
-    layer_last_tags = (8, 10, 13, 18, 22, 24, 27, 32, 36)
+    layer_last_tags = (8, 10, 13, 18, 22, 24, 27, 32, 36)  # last table row of each layer
     scale = A0 * np.array([1 / np.sqrt(2), 1 / np.sqrt(2), 1])
     positions, elements, tags = [], [], []
+    # c2mm mirrors (±x, ±y) and the (4, 1) centering
     for row, (symbol, xyz) in enumerate(zip(symbols, table), start=1):
         seen = set()
         for shift in ([0, 0, 0], [4, 1, 0]):
