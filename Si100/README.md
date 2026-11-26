@@ -1,62 +1,21 @@
-﻿# Si(100) reconstructions
+# Si(100)
 
-[Back to project overview](../README.md)
+Source: A. Ramstad, G. Brocks, and P. J. Kelly, Phys. Rev. B 51, 14504 (1995). https://doi.org/10.1103/PhysRevB.51.14504
 
-## Source
+| Script | Reconstruction | Data | Atoms (7 layers) |
+| --- | --- | --- | ---: |
+| `p2x1s.py` | p(2x1), symmetric dimers | Table III | 14 |
+| `p2x1a.py` | p(2x1), asymmetric dimers | Table III | 14 |
+| `p2x2.py` | p(2x2), alternating buckled dimers | Table IV | 28 |
+| `c4x2.py` | c(4x2), alternating buckled dimers | Table IV | 28 |
 
-A. Ramstad, G. Brocks, and P. J. Kelly, "Theoretical study of the Si(100) surface reconstruction," *Physical Review B* **51**, 14504-14523 (1995). [DOI: 10.1103/PhysRevB.51.14504](https://doi.org/10.1103/PhysRevB.51.14504)
+Each atom is put on its ideal site `(k*sqrt(2), l*sqrt(2), m) * A0/4` and the tabulated displacement (in Å) is added. The tables cover the top five layers; any layers below these are ideal bulk. The p(2x1) and p(2x2) cells are rectangular, and the c(4x2) model uses the skewed primitive cell. Atom tags give the layer number, counted from the top.
 
-The structures come from theoretical geometry optimization within the local-density approximation, using norm-conserving pseudopotentials and a plane-wave basis. Tables III and IV report displacements from ideal atomic positions; Figure 18 gives reference bond lengths and dimer buckling angles. These scripts reconstruct the reported geometries without running the paper's electronic-structure calculations.
+Settings: `TOTAL_LAYERS = 7` (at least 5) and `A0 = 5.431` Å, the experimental Si lattice constant.
 
-## Models and coordinates
-
-| Filename prefix | Reconstruction | Source table | Atoms in five-layer cell | Atoms with twelve layers |
-| --- | --- | --- | ---: | ---: |
-| `p(2x1)s` | Symmetric dimers | III | 10 | 24 |
-| `p(2x1)a` | Asymmetric dimers | III | 10 | 24 |
-| `p(2x2)` | Alternating buckled dimers | IV | 20 | 48 |
-| `c(4x2)` | Alternating buckled dimers | IV | 20 | 48 |
-
-Each reconstruction has one generator: `p(2x1)s.py`, `p(2x1)a.py`, `p(2x2).py`, or `c(4x2).py`. `TOTAL_LAYERS = 5` keeps the five reconstructed atomic layers. Higher values add ideal silicon planes underneath; for example, `TOTAL_LAYERS = 12` adds seven bulk planes. The setting must be an integer of at least five.
-
-Ideal Cartesian positions are constructed as `(k * sqrt(2), l * sqrt(2), m) * A0 / 4`, with `A0 = 5.431` angstroms. The tabulated displacements are then added in angstroms. Table III provides x and z displacements with zero y displacement; Table IV provides x, y, and z displacements. Displacement values are not multiplied by `A0`.
-
-The z-axis is normal to the surface, and deeper layers have decreasing z. All models use periodic boundaries `(True, True, False)`.
-
-- p(2x1): in-plane vectors `(A0 * sqrt(2), 0, 0)` and `(0, A0 / sqrt(2), 0)`.
-- p(2x2): in-plane vectors `(A0 * sqrt(2), 0, 0)` and `(0, A0 * sqrt(2), 0)`.
-- c(4x2): skewed primitive cell with vectors `(A0 * sqrt(2), A0 / sqrt(2), 0)` and `(0, A0 * sqrt(2), 0)`.
-
-Each generator centers the slab along z with 10 angstroms of vacuum on each side before saving. The MACE scripts read this cell directly.
-
-## Running
-
-Install dependencies as described in the [project README](../README.md). Run commands from the repository root:
-
-```powershell
-python "Si100/p(2x1)s.py"
 ```
-
-Replace the filename prefix to generate another reconstruction. `SHOW_GUI = True` opens the ASE viewer by default; set it to `False` in the relevant generator to run without the viewer. `DISPLAY_REPEAT = (3, 3, 1)` controls visualization, with x horizontal and z vertical.
-
-## Outputs
-
-Each generator writes `output/<script_name>.extxyz` and `output/<script_name>.traj`, relative to this folder. Both contain the fundamental cell, not the repeated visualization, and preserve cell and periodic boundary information. Metadata records the source DOI, reconstruction, and model description; atom tags identify layers.
-
-## Geometry validation
-
-After generating all four models, compare them with Figure 18:
-
-```powershell
+python Si100/p2x1s.py
 python Si100/validate_si100.py
 ```
 
-By default, the script reads all four `.extxyz` files. Input filenames identify the reconstruction, for example `p(2x1)s.traj`. To compare selected exports, including `.traj` files:
-
-```powershell
-python Si100/validate_si100.py "Si100/output/p(2x1)s.traj"
-```
-
-The script uses minimum-image distances and zero-based Python indices. It prints selected bond lengths and mean dimer buckling angles as model, paper, and difference tables. Figure 18's buckling angles for p(2x2) and c(4x2) are averages over two dimers. Reference angles are 0.0, 18.3, 19.1, and 18.8 degrees for p(2x1)s, p(2x1)a, p(2x2), and c(4x2), respectively.
-
-This validator reports geometry differences; it does not apply a numerical pass/fail tolerance to those differences. T
+Each generator saves `Si100/output/<script name>.extxyz` and `.traj`. The validator reads all four models (or the files given as arguments) and prints the bond lengths and mean dimer buckling angle next to Fig. 18 of the paper.

@@ -1,26 +1,33 @@
-# InAs(001)-c(8x2)
+# InAs(001)
 
-[Kumpf et al., PRB 64, 075307 (2001)](https://doi.org/10.1103/PhysRevB.64.075307), Table I, InAs column only: all 36 occupied rows, including the unnumbered deeper rows (five bilayers). Printed three-decimal coordinates are retained.
+## c(8x2), Kumpf et al.
 
-LEED basis: a = a0[1,-1,0]/2, b = a0[1,1,0]/2, c = a0[0,0,1]. The in-plane origin is the In3 site/mirror intersection in Fig. 5; z = 0 is the ideal In-terminated surface height (Fig. 3). In surface-aligned Cartesian axes, multiply Table I coordinates by `(a0/sqrt(2), a0/sqrt(2), a0)`. Apply c2mm operations `(±x, ±y, z)` and centering `(4,1,0)`, then wrap x modulo 8 and y modulo 2. Only repeated images of the same row are removed (12-decimal keys); distinct sites remain separate. Supercell in-plane fractions would be `(x/8,y/2)`, not `(x,y)`. 
+Source: C. Kumpf et al., Phys. Rev. B 64, 075307 (2001). https://doi.org/10.1103/PhysRevB.64.075307
 
-The paper supplies no numerical a0. We use **6.0583 Å**, the experimental InAs value in [Table 1 of the Ioffe-hosted band-parameter study](https://journals.ioffe.ru/articles/viewPDF/5724). ASE adds 10 Å vacuum per side along +z; PBC is `(True, True, False)`. No extra bulk layers, passivation, or relaxation are included.
+The coordinates are the InAs column of Table I, all 36 rows including the unnumbered deeper rows. They are LEED fractions in the basis a = a0[1-10]/2, b = a0[110]/2, c = a0[001]. Each row is copied with the c2mm symmetry (±x, ±y) and the (4, 1) centering, wrapped into the 8 x 2 cell and scaled by (a0/sqrt(2), a0/sqrt(2), a0).
 
-Run `python "InAs/c(8x2)_Kumpf.py"` from the repository root. Set `SHOW_GUI = False` for export only. `DISPLAY_REPEAT = (1,1,1)` affects only the viewer, with x horizontal and z vertical. `EXPORT_REPEAT = (1,1,1)` saves one reconstruction cell per file, and `TOTAL_LAYERS = 7` selects the slab depth. Exports are `output/c(8x2)_kumpf.extxyz`, `.traj`, and `.cif`; use extxyz/traj to preserve the slab PBC flags, which CIF does not encode. The Kumpf MACE script reads `output/c(8x2)_kumpf.traj`.
+Settings: `A0 = 6.0583` Å is the experimental InAs value (Vurgaftman et al., 2001), since the paper gives none. `TOTAL_LAYERS` (1 to 9, default 7) chooses how many of the tabulated layers are kept; no ideal layers are added.
 
+```
+python InAs/kumpf_c8x2.py
+```
 
-## InAs(001)-zeta(4x2), Miwa
+This saves `InAs/output/kumpf_c8x2.extxyz`, `.traj` and `.cif`. CIF does not store the non-periodic z direction, so use `.extxyz` or `.traj` for calculations.
 
-[Miwa et al., Surface Science 542, 101-111 (2003)](https://doi.org/10.1016/S0039-6028(03)00955-5), Figures 1(d), 3 and Table 1. `miwa_from_table.py` retains all 11 printed Cartesian coordinates in angstroms (including 2.051). Using a0 = 5.96 Angstrom, the short x direction (parallel to [110], vertical in Figure 3) and long y direction (parallel to [1,-1,0], horizontal in Figure 3) have periods 2a0/sqrt(2) and 4a0/sqrt(2). 
+## zeta(4x2), Miwa et al.
 
-Figure 3's left/right counterparts are inferred by reflection about y = 6.26; the missing subsurface dimer partners inferred at x = 2.84 + 2.76 = 5.60. Deeper As and In coordinates are not fully supplied and are omitted.
+Source: R. H. Miwa et al., Surf. Sci. 542, 101 (2003). https://doi.org/10.1016/S0039-6028(03)00955-5
 
-Run `python "InAs/miwa_from_table.py"` from the repository root. `VACUUM = 10.0`, `SHOW_GUI = True` and `DISPLAY_REPEAT = (1, 1, 1)` follow the example script; set `SHOW_GUI = False` for export only. Fundamental-cell `.extxyz`, `.traj` and `.cif` files go to `InAs/output/miwa_from_table.*`, with in-plane PBC (use extxyz/traj to retain the nonperiodic z flag).
+The 11 atoms of Table 1 are Cartesian coordinates in Å. `miwa_array.py` completes the reconstruction of Fig. 3: atoms 1-9 are mirrored across y = 6.26 Å, the missing In partner is placed 2.76 Å from atom 9 (and mirrored), and eight lower As atoms are inferred. The 30 atoms are saved in `InAs/miwa_array.npz`. `miwa_zeta4x2.py` reads this array, puts it in a 2a0/sqrt(2) x 4a0/sqrt(2) cell and adds ideal zinc-blende layers below.
 
-## Miwa Figure 3 completion
+Settings: `A0 = 5.96` Å, the theoretical lattice constant used in the paper. `TOTAL_LAYERS = 7` gives 62 atoms; 3 keeps only the 30 reconstruction atoms.
 
-`generate_fullmiwa_array.py` generates the 30-atom NumPy array `miwa_array.npz` from Table 1 using mirroring, In partners and eight inferred lower As atoms to complete Figure 3. `miwa_full.py` reads this array and uses the same ASE modelling workflow as the original Miwa script.
+The 1-2 bond from the table coordinates is 2.50 Å, while Fig. 3 gives 2.59 Å. The table coordinates are kept and the validator reports this bond without testing it.
 
-There are some inconsistency regarding the 1-2 bond (Atoms 0--4) from Fig. 3 and the coordinate table, so tabulated coordinates are retained. This will be addressed later.
+```
+python InAs/miwa_array.py
+python InAs/miwa_zeta4x2.py
+python InAs/validate_miwa.py
+```
 
-`miwa_full.py` adds ideal bulk planes with `TOTAL_LAYERS = 7` (four added planes, 62 atoms; use 3 for the original 30 atoms). `EXPORT_REPEAT = (1,1,1)` saves one reconstruction cell per file and `DISPLAY_REPEAT` controls the viewer.
+The model is saved as `InAs/output/miwa_zeta4x2.extxyz`, `.traj` and `.cif`. The validator compares six bonds with Fig. 3 and accepts differences up to 0.03 Å.
