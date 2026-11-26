@@ -5,11 +5,11 @@ from ase.io import read, write
 from ase.optimize import FIRE
 from mace.calculators import mace_mp
 
-MODELS = ("mh-0", "mh-1")
-HEAD = "omat_pbe"
-FMAX = 0.005
-STEPS = 2000
-OPTIMIZER = FIRE
+MODELS = ("mh-0", "mh-1")   # which MACE models to run
+HEAD = "omat_pbe"           # MACE head used for all runs
+FMAX = 0.005                # stop when the largest force is below this (eV/Å)
+STEPS = 2000                # max optimizer steps
+OPTIMIZER = FIRE            # ASE optimizer class
 
 
 def main(model):
@@ -19,7 +19,7 @@ def main(model):
     output.mkdir(parents=True, exist_ok=True)
 
     slab = read(repository / "InAs/output/miwa_zeta4x2.traj")
-    #add fix layers
+    # Fix the two deepest layers
     slab.set_constraint(FixAtoms(mask=slab.get_tags() > slab.get_tags().max() - 2))
     slab.calc = mace_mp(
         model=model,
