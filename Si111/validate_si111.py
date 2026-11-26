@@ -11,7 +11,7 @@ def main():
     parser.add_argument("files", nargs="*", type=Path)
     args = parser.parse_args()
     output = Path(__file__).resolve().parent / "output"
-    files = args.files or [output / f"(2x1)mp_enhanced_vibrations.{ext}" for ext in ("extxyz", "traj")]
+    files = args.files or [output / f"si111_2x1.{ext}" for ext in ("extxyz", "traj")]
     for path in files:
         slab = read(path)
         print(f"\n{path.name}")

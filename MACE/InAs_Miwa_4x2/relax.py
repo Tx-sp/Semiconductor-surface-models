@@ -18,7 +18,7 @@ def main(model):
     output = folder / "output" / model
     output.mkdir(parents=True, exist_ok=True)
 
-    slab = read(repository / "InAs/output/miwa_full.traj")
+    slab = read(repository / "InAs/output/miwa_zeta4x2.traj")
     #add fix layers
     slab.set_constraint(FixAtoms(mask=slab.get_tags() > slab.get_tags().max() - 2))
     slab.calc = mace_mp(

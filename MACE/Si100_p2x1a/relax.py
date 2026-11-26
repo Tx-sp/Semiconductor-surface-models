@@ -18,7 +18,7 @@ def main(model):
     output = folder / "output" / model
     output.mkdir(parents=True, exist_ok=True)
 
-    slab = read(repository / "Si100/output/p(2x1)a.traj")
+    slab = read(repository / "Si100/output/p2x1a.traj")
     #add fix layers
     slab.set_constraint(FixAtoms(mask=slab.get_tags() > slab.get_tags().max() - 2))
     slab.calc = mace_mp(

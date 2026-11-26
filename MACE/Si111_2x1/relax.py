@@ -18,7 +18,7 @@ def main(model):
     output = folder / "output" / model
     output.mkdir(parents=True, exist_ok=True)
 
-    slab = read(repository / "Si111/output/(2x1)mp_enhanced_vibrations.traj")
+    slab = read(repository / "Si111/output/si111_2x1.traj")
     slab.set_constraint(FixAtoms(mask=slab.get_tags() > slab.get_tags().max() - 2))
     slab.calc = mace_mp(
         model=model,
