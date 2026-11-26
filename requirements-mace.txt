@@ -1,0 +1,2 @@
+# Install PyTorch with CUDA for your GPU from pytorch.org first (used: PyTorch 2.15.0, CUDA 13.2).
+mace-torch==0.3.17
